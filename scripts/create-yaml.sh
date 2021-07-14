@@ -36,9 +36,15 @@ echo "${SCCS}" | ${JQ} -r '.[]' | while read scc; do
   if [[ -f "${CONFIG_DIR}/scc-${scc}.yaml" ]]; then
     export NAME="${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-${scc}"
 
-    cat "${CONFIG_DIR}/scc-${NAME}.yaml" | \
-      ${YQ} e '.metadata.name = env(NAME)' - | \
-      ${YQ} e '.users += [env(USER)]' - > "${REPO_PATH}/scc-${NAME}.yaml"
+    if [[ "$(yq --version)" =~ yq.version.3 ]]; then
+      cat "${CONFIG_DIR}/scc-${scc}.yaml" | \
+        ${YQ} w - 'metadata.name' "${NAME}" | \
+        ${YQ} w - 'users[+]' "${USER}" > "${REPO_PATH}/scc-${NAME}.yaml"
+    else
+      cat "${CONFIG_DIR}/scc-${scc}.yaml" | \
+        ${YQ} e '.metadata.name = env(NAME)' - | \
+        ${YQ} e '.users += [env(USER)]' - > "${REPO_PATH}/scc-${NAME}.yaml"
+    fi
   else
     echo "Unknown scc: ${scc}"
   fi
