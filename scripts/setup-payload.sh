@@ -21,6 +21,9 @@ cd "${REPO_DIR}" || exit 1
 
 mkdir -p "${REPO_PATH}"
 
+echo "Copying content dir: ${CONTENT_DIR}"
+ls "${CONTENT_DIR}/*"
+
 cp -R "${CONTENT_DIR}/*" "${REPO_PATH}"
 
 git add .
