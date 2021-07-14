@@ -44,6 +44,7 @@ function finish {
 trap finish EXIT
 
 echo "Gitops config: ${GITOPS_CONFIG}"
+${JQ} --version
 
 PAYLOAD_REPO=$(echo "${GITOPS_CONFIG}" | ${JQ} -r '.payload.repo')
 
