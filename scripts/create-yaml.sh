@@ -26,6 +26,8 @@ if [[ -z "${YQ}" ]]; then
   YQ="${PWD}/bin/yq"
 fi
 
+${YQ} --version
+
 mkdir -p "${REPO_PATH}"
 
 export USER="system:serviceaccount:${NAMESPACE}:${SERVICE_ACCOUNT_NAME}"
