@@ -28,12 +28,16 @@ fi
 
 ${YQ} --version
 
+echo "Repo path: ${REPO_PATH}"
+
 mkdir -p "${REPO_PATH}"
 
 export USER="system:serviceaccount:${NAMESPACE}:${SERVICE_ACCOUNT_NAME}"
 
 echo "${SCCS}" | ${JQ} -r '.[]' | while read scc; do
   if [[ -f "${CONFIG_DIR}/scc-${scc}.yaml" ]]; then
+    echo "Processing scc: ${scc}"
+
     export NAME="${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-${scc}"
 
     if [[ "$(yq --version)" =~ yq.version.3 ]]; then
@@ -49,3 +53,5 @@ echo "${SCCS}" | ${JQ} -r '.[]' | while read scc; do
     echo "Unknown scc: ${scc}"
   fi
 done
+
+ls "${REPO_PATH}"
