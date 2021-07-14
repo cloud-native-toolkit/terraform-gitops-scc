@@ -3,12 +3,12 @@ locals {
   layer_config = var.gitops_config[local.layer]
   application_branch = "main"
   config_namespace = "default"
-  yaml_dir = "${path.cwd}/.tmp/scc-${var.service_account}"
+  yaml_dir = "${path.cwd}/.tmp/scc-${var.service_account}/cluster"
 }
 
 resource null_resource create_yaml {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}/cluster' '${var.namespace}' '${var.service_account}' '${jsonencode(var.sccs)}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${var.namespace}' '${var.service_account}' '${jsonencode(var.sccs)}'"
   }
 }
 
