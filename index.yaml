@@ -1,11 +1,30 @@
 id: github.com/cloud-native-toolkit/terraform-gitops-sccs
-name: ""
+name: gitops-sccs
 type: terraform
-description: ""
+description: Module to populate a gitops repo with SCCs attached to a service account
 tags:
-  - tools
-  - devops
+  - infrastructure
+  - scc
+  - gitops
 versions:
+  - platforms: []
+    dependencies: []
+    #    - id: cluster
+    #      refs:
+    #        - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
+    #          version: ">= 1.7.0"
+    #        - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
+    #          version: ">= 2.0.0"
+    #    - id: namespace
+    #      refs:
+    #        - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
+    #          version: ">= 2.1.0"
+    #    - id: dashboard
+    #      refs:
+    #        - source: github.com/ibm-garage-cloud/terraform-k8s-dashboard
+    #          version: ">= 1.6.0"
+    variables: [{name: gitops_config, type: "object({\n    boostrap = object({\n      argocd-config = object({\n        project = string\n        repo = string\n        url = string\n        path = string\n      })\n    })\n    infrastructure = object({\n      argocd-config = object({\n        project = string\n        repo = string\n        url = string\n        path = string\n      })\n      payload = object({\n        repo = string\n        url = string\n        path = string\n      })\n    })\n    services = object({\n      argocd-config = object({\n        project = string\n        repo = string\n        url = string\n        path = string\n      })\n      payload = object({\n        repo = string\n        url = string\n        path = string\n      })\n    })\n    applications = object({\n      argocd-config = object({\n        project = string\n        repo = string\n        url = string\n        path = string\n      })\n      payload = object({\n        repo = string\n        url = string\n        path = string\n      })\n    })\n  })", description: Config information regarding the gitops repo structure}, {name: git_credentials, type: "list(object({\n    repo = string\n    url = string\n    username = string\n    token = string\n  }))", description: The credentials for the gitops repo(s)}, {name: namespace, type: string, description: The namespace where the application should be deployed}, {name: service_account, type: string, description: The name of the service account that should be created}, {name: sccs, type: list(string), description: 'The SCCs, if any, that should be provisioned', default: [], optional: true}]
+    version: v1.0.0
   - platforms:
       - kubernetes
       - ocp3
