@@ -18,7 +18,10 @@ fi
 
 cat argocd/1-infrastructure/active/cluster.yaml
 
-if [[ $(ls "payload/1-infrastructure/cluster" | wc -l) -eq 0 ]]; then
+NAMESPACE="gitops-sccs"
+SERVICE_ACCOUNT="test-sa"
+
+if [[ $(ls "payload/1-infrastructure/cluster" | grep -c "scc-${NAMESPACE}-${SERVICE_ACCOUNT}") -lt 2 ]]; then
   echo "Payload missing: payload/1-infrastructure/cluster"
   exit 1
 fi
