@@ -1,14 +1,12 @@
-name: ""
+name: gitops-sccs
 type: terraform
-description: ""
+description: Module to populate a gitops repo with SCCs attached to a service account
 tags:
-    - tools
-    - devops
+    - infrastructure
+    - scc
+    - gitops
 versions:
-- platforms:
-    - kubernetes
-    - ocp3
-    - ocp4
+- platforms: []
   dependencies: []
 #    - id: cluster
 #      refs:
