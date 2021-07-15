@@ -7,44 +7,29 @@ tags:
     - gitops
 versions:
 - platforms: []
-  dependencies: []
-#    - id: cluster
-#      refs:
-#        - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-#          version: ">= 1.7.0"
-#        - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-#          version: ">= 2.0.0"
-#    - id: namespace
-#      refs:
-#        - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
-#          version: ">= 2.1.0"
-#    - id: dashboard
-#      refs:
-#        - source: github.com/ibm-garage-cloud/terraform-k8s-dashboard
-#          version: ">= 1.6.0"
-  variables: []
-#    - name: cluster_type
-#      moduleRef:
-#        id: cluster
-#        output: type_code
-#    - name: cluster_ingress_hostname
-#      moduleRef:
-#        id: cluster
-#        output: ingress_hostname
-#    - name: cluster_config_file
-#      moduleRef:
-#        id: cluster
-#        output: config_file_path
-#    - name: tls_secret_name
-#      moduleRef:
-#        id: cluster
-#        output: tls_secret_name
-#    - name: releases_namespace
-#      moduleRef:
-#        id: namespace
-#        output: name
-#        discriminator: tools
-#    - name: icon_url
-#      moduleRef:
-#        id: dashboard
-#        output: base_icon_url
+  dependencies:
+    - id: gitops
+      refs:
+        - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
+          version: ">= 1.1.0"
+    - id: service_account
+      refs:
+        - source: github.com/cloud-native-toolkit/terraform-gitops-service-account.git
+          version: ">= v0.0.0"
+  variables:
+    - name: gitops_config
+      moduleRef:
+        id: gitops
+        output: gitops_config
+    - name: git_credentials
+      moduleRef:
+        id: gitops
+        output: git_credentials
+    - name: namespace
+      moduleRef:
+        id: service_account
+        output: namespace
+    - name: service_account
+      moduleRef:
+        id: service_account
+        output: name
