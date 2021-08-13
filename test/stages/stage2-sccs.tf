@@ -6,4 +6,5 @@ module "gitops_sccs" {
   namespace = var.namespace
   service_account = "test-sa"
   sccs = ["anyuid","privileged"]
+  server_name = module.gitops.server_name
 }
