@@ -7,7 +7,7 @@ GIT_TOKEN=$(cat git_token)
 NAMESPACE="gitops-sccs"
 SERVICE_ACCOUNT="test-sa"
 SERVER_NAME="default"
-NAME="scc-${SERVICE_ACCOUNT}"
+NAME="${SERVICE_ACCOUNT}-scc"
 
 mkdir -p .testrepo
 
@@ -17,19 +17,19 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-if [[ ! -f "argocd/1-infrastructure/cluster/${SERVER_NAME}/base/${NAME}.yaml" ]]; then
-  echo "Argocd config missing: argocd/1-infrastructure/cluster/${SERVER_NAME}/base/${NAME}.yaml"
+if [[ ! -f "argocd/1-infrastructure/cluster/${SERVER_NAME}/base/${NAMESPACE}-${NAME}.yaml" ]]; then
+  echo "Argocd config missing: argocd/1-infrastructure/cluster/${SERVER_NAME}/base/${NAMESPACE}-${NAME}.yaml"
   exit 1
 fi
 
-cat argocd/1-infrastructure/cluster/${SERVER_NAME}/base/${NAME}.yaml
+cat argocd/1-infrastructure/cluster/${SERVER_NAME}/base/${NAMESPACE}-${NAME}.yaml
 
-if [[ ! -f "payload/1-infrastructure/namespace/${NAMESPACE}/${NAME}/scc-${NAMESPACE}-${SERVICE_ACCOUNT}.yaml" ]]; then
-  echo "Payload missing: payload/1-infrastructure/namespace/${NAMESPACE}/${NAME}/scc-${NAMESPACE}-${SERVICE_ACCOUNT}.yaml"
+if [[ ! -d "payload/1-infrastructure/namespace/${NAMESPACE}/${NAME}" ]]; then
+  echo "Payload dir missing: payload/1-infrastructure/namespace/${NAMESPACE}/${NAME}"
   exit 1
 fi
 
-ls "payload/1-infrastructure/namespace/${NAMESPACE}/${NAME}/scc-${NAMESPACE}-${SERVICE_ACCOUNT}.yaml"
+ls "payload/1-infrastructure/namespace/${NAMESPACE}/${NAME}"
 
 cd ..
 rm -rf .testrepo
