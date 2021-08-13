@@ -3,7 +3,7 @@ module "gitops_sccs" {
 
   gitops_config = module.gitops.gitops_config
   git_credentials = module.gitops.git_credentials
-  namespace = module.gitops_namespace.name
-  service_account = module.gitops_service_account.name
+  namespace = var.namespace
+  service_account = "test-sa"
   sccs = ["anyuid","privileged"]
 }

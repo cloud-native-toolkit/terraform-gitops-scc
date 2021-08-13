@@ -33,3 +33,7 @@ versions:
       moduleRef:
         id: service_account
         output: name
+    - name: serverName
+      moduleRef:
+        id: gitops
+        output: serverName

@@ -8,23 +8,13 @@ NAMESPACE="$2"
 SERVICE_ACCOUNT_NAME="$3"
 SCCS="$4"
 
-JQ=$(command -v jq || command -v ./bin/jq)
-
-if [[ -z "${JQ}" ]]; then
-  echo "jq missing. Installing"
-  mkdir -p ./bin && curl -Lo ./bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
-  chmod +x ./bin/jq
-  JQ="${PWD}/bin/jq"
+if [[ -z "${BIN_DIR}" ]]; then
+  BIN_DIR="./bin"
 fi
 
-YQ=$(command -v yq || command -v ./bin/yq)
+JQ=$(command -v jq || command -v ${BIN_DIR}/jq)
 
-if [[ -z "${YQ}" ]]; then
-  echo "jq missing. Installing"
-  mkdir -p ./bin && curl -Lo ./bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.8/yq_linux_amd64
-  chmod +x ./bin/yq
-  YQ="${PWD}/bin/yq"
-fi
+YQ=$(command -v yq || command -v ${BIN_DIR}/yq)
 
 ${YQ} --version
 
@@ -38,7 +28,7 @@ echo "${SCCS}" | ${JQ} -r '.[]' | while read scc; do
   if [[ -f "${CONFIG_DIR}/scc-${scc}.yaml" ]]; then
     echo "Processing scc: ${scc}"
 
-    export NAME="${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-${scc}"
+    NAME="${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-${scc}"
 
     if [[ "$(yq --version)" =~ yq.version.3 ]]; then
       cat "${CONFIG_DIR}/scc-${scc}.yaml" | \
