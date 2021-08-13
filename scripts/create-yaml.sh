@@ -28,7 +28,7 @@ echo "${SCCS}" | ${JQ} -r '.[]' | while read scc; do
   if [[ -f "${CONFIG_DIR}/scc-${scc}.yaml" ]]; then
     echo "Processing scc: ${scc}"
 
-    export NAME="${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-${scc}"
+    NAME="${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-${scc}"
 
     if [[ "$(yq --version)" =~ yq.version.3 ]]; then
       cat "${CONFIG_DIR}/scc-${scc}.yaml" | \
