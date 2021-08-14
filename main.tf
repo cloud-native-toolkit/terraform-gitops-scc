@@ -17,6 +17,7 @@ resource null_resource setup_binaries {
 
 resource null_resource create_yaml {
   depends_on = [null_resource.setup_binaries]
+  count = length(var.sccs) > 0 ? 1 : 0
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${var.namespace}' '${var.service_account}' '${jsonencode(var.sccs)}'"
@@ -29,6 +30,7 @@ resource null_resource create_yaml {
 
 resource null_resource setup_gitops {
   depends_on = [null_resource.create_yaml]
+  count = length(var.sccs) > 0 ? 1 : 0
 
   provisioner "local-exec" {
     command = "$(command -v igc || command -v ${local.bin_dir}/igc) gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
