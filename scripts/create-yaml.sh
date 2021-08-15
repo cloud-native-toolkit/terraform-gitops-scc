@@ -14,7 +14,7 @@ fi
 
 JQ=$(command -v jq || command -v ${BIN_DIR}/jq)
 
-YQ=$(command -v yq || command -v ${BIN_DIR}/yq)
+YQ=$(command -v yq || command -v ${BIN_DIR}/yq4)
 
 ${YQ} --version
 
