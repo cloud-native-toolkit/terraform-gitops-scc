@@ -1,22 +1,15 @@
 locals {
-  bin_dir = "${path.cwd}/bin"
+  bin_dir  = module.setup_clis.bin_dir
   layer = "infrastructure"
   yaml_dir = "${path.cwd}/.tmp/scc-${var.service_account}/cluster"
   name = "${var.service_account}-scc"
 }
 
-resource null_resource setup_binaries {
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/setup-binaries.sh"
-
-    environment = {
-      BIN_DIR = local.bin_dir
-    }
-  }
+module setup_clis {
+  source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 }
 
 resource null_resource create_yaml {
-  depends_on = [null_resource.setup_binaries]
   count = length(var.sccs) > 0 ? 1 : 0
 
   provisioner "local-exec" {
@@ -33,7 +26,7 @@ resource null_resource setup_gitops {
   count = length(var.sccs) > 0 ? 1 : 0
 
   provisioner "local-exec" {
-    command = "$(command -v igc || command -v ${local.bin_dir}/igc) gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
+    command = "${local.bin_dir}/igc gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
 
     environment = {
       GIT_CREDENTIALS = yamlencode(var.git_credentials)
