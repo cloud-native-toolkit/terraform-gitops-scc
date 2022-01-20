@@ -31,7 +31,7 @@ resource null_resource setup_gitops {
     yaml_dir = local.yaml_dir
     server_name = var.server_name
     layer = local.layer
-    git_credentials = yamlencode(nonsensitive(var.git_credentials))
+    git_credentials = yamlencode(var.git_credentials)
     gitops_config   = yamlencode(var.gitops_config)
     bin_dir = local.bin_dir
   }
@@ -40,7 +40,7 @@ resource null_resource setup_gitops {
     command = "${self.triggers.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}'"
 
     environment = {
-      GIT_CREDENTIALS = self.triggers.git_credentials
+      GIT_CREDENTIALS = nonsensitive(self.triggers.git_credentials)
       GITOPS_CONFIG   = self.triggers.gitops_config
     }
   }
@@ -50,7 +50,7 @@ resource null_resource setup_gitops {
     command = "${self.triggers.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --delete --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}'"
 
     environment = {
-      GIT_CREDENTIALS = self.triggers.git_credentials
+      GIT_CREDENTIALS = nonsensitive(self.triggers.git_credentials)
       GITOPS_CONFIG   = self.triggers.gitops_config
     }
   }
