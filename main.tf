@@ -33,4 +33,14 @@ resource null_resource setup_gitops {
       GITOPS_CONFIG   = yamlencode(var.gitops_config)
     }
   }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${local.bin_dir}/igc gitops-module '${local.name}' -n '${var.namespace}' --delete --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
+
+    environment = {
+      GIT_CREDENTIALS = nonsensitive(yamlencode(var.git_credentials))
+      GITOPS_CONFIG   = yamlencode(var.gitops_config)
+    }
+  }
 }
