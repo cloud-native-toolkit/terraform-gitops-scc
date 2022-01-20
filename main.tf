@@ -33,10 +33,11 @@ resource null_resource setup_gitops {
     layer = local.layer
     git_credentials = nonsensitive(var.git_credentials)
     gitops_config   = var.gitops_config
+    bin_dir = local.bin_dir
   }
 
   provisioner "local-exec" {
-    command = "${local.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}'"
+    command = "${self.triggers.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}'"
 
     environment = {
       GIT_CREDENTIALS = yamlencode(self.triggers.git_credentials)
@@ -46,7 +47,7 @@ resource null_resource setup_gitops {
 
   provisioner "local-exec" {
     when = destroy
-    command = "${local.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --delete --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}'"
+    command = "${self.triggers.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --delete --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}'"
 
     environment = {
       GIT_CREDENTIALS = yamlencode(self.triggers.git_credentials)
