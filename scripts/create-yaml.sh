@@ -23,21 +23,21 @@ echo "Repo path: ${REPO_PATH}"
 mkdir -p "${REPO_PATH}"
 
 export USER="system:serviceaccount:${NAMESPACE}:${SERVICE_ACCOUNT_NAME}"
-export GROUP="system:serviceaccount:${NAMESPACE}"
+export GROUP="system:serviceaccounts:${NAMESPACE}"
 
 echo "${SCCS}" | ${JQ} -r '.[]' | while read scc; do
   if [[ -f "${CONFIG_DIR}/scc-${scc}.yaml" ]]; then
 
     if [[ -n "${SERVICE_ACCOUNT_NAME}" ]]; then
       echo "Processing ${scc} scc for service account ${NAMESPACE}/${SERVICE_ACCOUNT_NAME}"
-      NAME="${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-${scc}"
+      export NAME="${NAMESPACE}-${SERVICE_ACCOUNT_NAME}-${scc}"
 
       cat "${CONFIG_DIR}/scc-${scc}.yaml" | \
         ${YQ} e '.metadata.name = env(NAME)' - | \
         ${YQ} e '.users += [env(USER)]' - > "${REPO_PATH}/scc-${NAME}.yaml"
     else
       echo "Processing ${scc} scc for namespace group ${NAMESPACE}"
-      NAME="${NAMESPACE}-${scc}"
+      export NAME="${NAMESPACE}-${scc}"
 
       cat "${CONFIG_DIR}/scc-${scc}.yaml" | \
         ${YQ} e '.metadata.name = env(NAME)' - | \
