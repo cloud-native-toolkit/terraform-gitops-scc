@@ -3,6 +3,7 @@ locals {
   layer = "infrastructure"
   yaml_dir = "${path.cwd}/.tmp/scc-${var.service_account}/cluster"
   name = "${var.service_account}-scc"
+  service_account = var.group ? "" : var.service_account
 }
 
 module setup_clis {
@@ -13,7 +14,7 @@ resource null_resource create_yaml {
   count = length(var.sccs) > 0 ? 1 : 0
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${var.namespace}' '${var.service_account}' '${jsonencode(var.sccs)}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.yaml_dir}' '${var.namespace}' '${jsonencode(var.sccs)}' '${local.service_account}'"
 
     environment = {
       BIN_DIR = local.bin_dir
