@@ -37,9 +37,9 @@ fi
 ls "payload/${LAYER}/namespace/${NAMESPACE}/${NAME}"
 
 if [[ "${GROUP}" == "true" ]]; then
-  FILE_NAME="${NAMESPACE}-anyuid.yaml"
+  FILE_NAME="scc-${NAMESPACE}-anyuid.yaml"
 else
-  FILE_NAME="${NAMESPACE}-${SERVICE_ACCOUNT}-anyuid.yaml"
+  FILE_NAME="scc-${NAMESPACE}-${SERVICE_ACCOUNT}-anyuid.yaml"
 fi
 
 if [[ ! -f "payload/${LAYER}/namespace/${NAMESPACE}/${NAME}/${FILE_NAME}" ]]; then
