@@ -47,6 +47,7 @@ if [[ ! -f "payload/${LAYER}/namespace/${NAMESPACE}/${NAME}/${FILE_NAME}" ]]; th
   exit 1
 fi
 
+echo "Contents of payload: payload/${LAYER}/namespace/${NAMESPACE}/${NAME}/${FILE_NAME}"
 cat "payload/${LAYER}/namespace/${NAMESPACE}/${NAME}/${FILE_NAME}"
 
 cd ..
