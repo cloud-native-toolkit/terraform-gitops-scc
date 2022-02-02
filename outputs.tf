@@ -43,6 +43,6 @@ output "group" {
 
 output "service_account" {
   description = "The name of the service account"
-  value       = var.group ? "" : var.service_account
+  value       = local.service_account
   depends_on  = [null_resource.setup_gitops]
 }
