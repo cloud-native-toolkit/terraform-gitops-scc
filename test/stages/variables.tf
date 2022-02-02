@@ -79,6 +79,10 @@ variable "gitops_namespace" {
   default = "openshift-gitops"
 }
 
+variable "service_account_name" {
+  type = string
+}
+
 variable "scc_group" {
   type = bool
 }
