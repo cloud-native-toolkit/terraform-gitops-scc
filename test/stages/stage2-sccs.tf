@@ -7,4 +7,5 @@ module "gitops_sccs" {
   service_account = "test-sa"
   sccs = ["anyuid","privileged"]
   server_name = module.gitops.server_name
+  group = var.scc_group
 }

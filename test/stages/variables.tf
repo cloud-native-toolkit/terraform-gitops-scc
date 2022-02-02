@@ -78,3 +78,7 @@ variable "git_repo" {
 variable "gitops_namespace" {
   default = "openshift-gitops"
 }
+
+variable "scc_group" {
+  type = bool
+}
