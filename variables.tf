@@ -70,7 +70,14 @@ variable "namespace" {
 
 variable "service_account" {
   type        = string
-  description = "The name of the service account that should be created"
+  description = "The name of the service account that should be granted the SCC privileges"
+  default     = ""
+}
+
+variable "group" {
+  type        = string
+  description = "Apply the SCC to all the service accounts in the namespace"
+  default     = false
 }
 
 variable "sccs" {
