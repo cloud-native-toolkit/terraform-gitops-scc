@@ -70,13 +70,13 @@ variable "namespace" {
 
 variable "service_account" {
   type        = string
-  description = "The name of the service account that should be granted the SCC privileges"
+  description = "The name of the service account that should be granted the SCC privileges. If empty the SCC will be applied to all service accounts in the namespace"
   default     = ""
 }
 
 variable "group" {
-  type        = string
-  description = "Apply the SCC to all the service accounts in the namespace"
+  type        = bool
+  description = "Flag indicating the SCC should be applied to all the service accounts in the namespace"
   default     = false
 }
 

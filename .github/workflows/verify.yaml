@@ -18,7 +18,8 @@ jobs:
     strategy:
       matrix:
         platform: [ocp4_latest]
-      #      max-parallel: 1
+        group: [false, true]
+      max-parallel: 1
       fail-fast: false
 
     env:
@@ -55,6 +56,7 @@ jobs:
           TF_VAR_git_repo: ${{ steps.variables.outputs.repo }}
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
+          TF_VAR_scc_group: ${{ matrix.group }}
 
       - name: Verify destroy on ${{ matrix.platform }}
         uses: ibm-garage-cloud/action-module-verify-destroy@main
@@ -68,10 +70,26 @@ jobs:
           TF_VAR_git_repo: ${{ steps.variables.outputs.repo }}
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
+          TF_VAR_scc_group: ${{ matrix.group }}
+
+  verifyMetadata:
+    runs-on: ubuntu-latest
+
+    env:
+      DIST_DIR: ./dist
+      PUBLISH_BRANCH: gh-pages
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: cloud-native-toolkit/action-module-metadata-create@v1
+        with:
+          strict: true
+          validate: true
 
   release:
-    #    if: ${{ github.event_name == 'push' }}
-    needs: verify
+    needs: [verify, verifyMetadata]
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' }}
 
