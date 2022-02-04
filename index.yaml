@@ -120,6 +120,139 @@ versions:
         moduleRef:
           id: gitops
           output: server_name
+    version: v1.2.3
+    outputs:
+      - name: name
+        description: The name of the module
+      - name: branch
+        description: The branch where the module config has been placed
+      - name: namespace
+        description: The namespace where the module will be deployed
+      - name: server_name
+        description: The server where the module will be deployed
+      - name: layer
+        description: The layer where the module is deployed
+      - name: type
+        description: The type of module where the module is deployed
+      - name: group
+        description: >-
+          The value of the group flag indicating the scc was created for all
+          service accounts in the group
+      - name: service_account
+        description: The name of the service account
+  - platforms: []
+    dependencies:
+      - id: gitops
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-tools-gitops.git
+            version: '>= 1.1.0'
+      - id: service_account
+        refs:
+          - source: >-
+              github.com/cloud-native-toolkit/terraform-gitops-service-account.git
+            version: '>= v0.0.0'
+    variables:
+      - name: gitops_config
+        type: |-
+          object({
+              boostrap = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              infrastructure = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              services = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+              applications = object({
+                argocd-config = object({
+                  project = string
+                  repo = string
+                  url = string
+                  path = string
+                })
+                payload = object({
+                  repo = string
+                  url = string
+                  path = string
+                })
+              })
+            })
+        description: Config information regarding the gitops repo structure
+        moduleRef:
+          id: gitops
+          output: gitops_config
+      - name: git_credentials
+        type: |-
+          list(object({
+              repo = string
+              url = string
+              username = string
+              token = string
+            }))
+        description: The credentials for the gitops repo(s)
+        sensitive: true
+        moduleRef:
+          id: gitops
+          output: git_credentials
+      - name: namespace
+        type: string
+        description: The namespace where the application should be deployed
+        moduleRef:
+          id: service_account
+          output: namespace
+      - name: service_account
+        type: string
+        description: >-
+          The name of the service account that should be granted the SCC
+          privileges. If empty the SCC will be applied to all service accounts
+          in the namespace
+        default: ''
+        moduleRef:
+          id: service_account
+          output: name
+      - name: group
+        type: bool
+        description: >-
+          Flag indicating the SCC should be applied to all the service accounts
+          in the namespace
+        default: false
+      - name: sccs
+        type: list(string)
+        description: The SCCs, if any, that should be provisioned
+        default: []
+      - name: server_name
+        type: string
+        description: The cluster where the application will be provisioned
+        default: default
+        moduleRef:
+          id: gitops
+          output: server_name
     version: v1.2.2
     outputs:
       - name: name
