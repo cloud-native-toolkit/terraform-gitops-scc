@@ -1,9 +1,10 @@
 locals {
   bin_dir  = module.setup_clis.bin_dir
   layer = "infrastructure"
-  yaml_dir = "${path.cwd}/.tmp/scc-${local.service_account == "" ? var.namespace : local.service_account}/cluster"
-  name = local.service_account == "" ? var.namespace : "${var.service_account}-scc"
+  dir_name = local.service_account == "" ? "${var.namespace}-group" : local.service_account
+  name = local.service_account == "" ? "${var.namespace}-group" : "${var.service_account}-scc"
   service_account = var.group ? "" : var.service_account
+  yaml_dir = "${path.cwd}/.tmp/scc-${local.dir_name}/cluster"
   application_branch = "main"
 }
 
