@@ -21,7 +21,7 @@ jobs:
         group: [false, true]
         sa_name: ["test-sa", ""]
       max-parallel: 1
-      fail-fast: false
+      fail-fast: true
 
     env:
       HOME: /home/devops
