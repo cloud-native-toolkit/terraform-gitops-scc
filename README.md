@@ -12,7 +12,7 @@ The module depends on the following software components:
 
 ### Terraform providers
 
-- IBM Cloud provider >= 1.5.3
+- Cloud-Native Toolkit GitOps provider
 
 ## Module dependencies
 
