@@ -59,6 +59,7 @@ jobs:
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
           TF_VAR_scc_group: ${{ matrix.group }}
           TF_VAR_service_account_name: ${{ matrix.sa_name }}
+          TF_LOG: DEBUG
 
       - name: Verify destroy on ${{ matrix.platform }}
         uses: ibm-garage-cloud/action-module-verify-destroy@main
@@ -74,6 +75,7 @@ jobs:
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
           TF_VAR_scc_group: ${{ matrix.group }}
           TF_VAR_service_account_name: ${{ matrix.sa_name }}
+          TF_LOG: DEBUG
 
   verifyMetadata:
     runs-on: ubuntu-latest
