@@ -10,7 +10,8 @@ locals {
 }
 
 module setup_clis {
-  source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
+  source = "cloud-native-toolkit/clis/util"
+  version = "v1.16.2"
 }
 
 resource null_resource create_yaml {
