@@ -11,7 +11,6 @@ locals {
 
 module setup_clis {
   source = "cloud-native-toolkit/clis/util"
-  version = "v1.16.2"
 }
 
 resource null_resource create_yaml {
